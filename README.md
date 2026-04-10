@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # L.L Beauty Website MVP
 
 This repository currently contains a polished static homepage prototype for the `L.L Beauty` brand. It is designed as a premium landing page that combines luxury product discovery, salon positioning, and franchise lead generation in one flow.
@@ -31,3 +32,7 @@ This repository currently contains a polished static homepage prototype for the 
 4. Integrate OTP verification for login and franchise lead validation.
 5. Add cart, checkout, Razorpay payment flow, and order persistence.
 6. Add CRM dashboard and admin views for lead and order management.
+=======
+# ll-beauty-website
+Starter homepage for LL Beauty website
+>>>>>>> ed2bcccd51348cf0d8490ac5dc7162e5f9a4bf7c
