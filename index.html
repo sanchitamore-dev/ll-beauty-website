@@ -15,7 +15,7 @@
       <header class="site-header">
         <div class="brand-lockup">
           <button class="icon-button" aria-label="Open menu">☰</button>
-          <a class="brand" href="#top" aria-label="L.L Beauty home">
+          <a class="brand" href="index.html" aria-label="L.L Beauty home">
             <span class="brand-mark">LL</span>
             <span class="brand-copy">
               <strong>L.L Beauty</strong>
@@ -25,23 +25,123 @@
         </div>
 
         <nav class="site-nav" aria-label="Primary navigation">
-          <a href="#shop">Shop</a>
-          <a href="#fragrance">Fragrance</a>
-          <a href="#skincare">Skincare</a>
-          <a href="#accessories">Accessories</a>
-          <a href="#salon">Salon / Lounge</a>
-          <a href="#franchise">Franchise</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="shop.html">Shop</a>
+          <a href="fragrance.html">Fragrance</a>
+          <a href="skincare.html">Skincare</a>
+          <a href="accessories.html">Accessories</a>
+          <a href="salon.html">Salon / Lounge</a>
+          <a href="franchise.html">Franchise</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
         </nav>
 
         <div class="header-actions">
           <a class="text-link" href="#login">Login</a>
-          <button class="icon-button" aria-label="View cart">🛍</button>
+          <button class="icon-button cart-button" id="cart-button" aria-label="View cart">
+            🛍
+            <span class="cart-count" id="cart-count">0</span>
+          </button>
         </div>
       </header>
 
       <main>
+        <section class="launch-slider" aria-label="Featured offers and new launches">
+          <div class="launch-slider-head">
+            <div>
+              <p class="eyebrow">Live offers</p>
+              <h2>New launches and limited-time beauty offers, sliding right at the top.</h2>
+            </div>
+            <div class="launch-slider-controls">
+              <button
+                class="launch-slider-arrow"
+                id="launch-slider-prev"
+                type="button"
+                aria-label="Show previous offer"
+              >
+                ←
+              </button>
+              <button
+                class="launch-slider-arrow"
+                id="launch-slider-next"
+                type="button"
+                aria-label="Show next offer"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
+          <div class="launch-slider-viewport">
+            <div class="launch-slider-track" id="launch-slider-track">
+              <article class="launch-slide launch-slide-offer" data-launch-slide>
+                <div class="launch-slide-copy">
+                  <span class="launch-tag">Weekend offer</span>
+                  <h3>Flat 20% off on Gold Peptide Radiance Kit this week.</h3>
+                  <p>
+                    Drive first-time checkout with a hero skincare launch offer built for repeat
+                    purchase and gifting.
+                  </p>
+                  <div class="launch-slide-actions">
+                    <a class="button button-primary" href="shop.html">Shop Offer</a>
+                    <a class="button button-ghost" href="skincare.html">See Skincare</a>
+                  </div>
+                </div>
+                <div class="launch-slide-highlight">
+                  <span>Offer code</span>
+                  <strong>GLOW20</strong>
+                  <p>Applies on hero skincare kits and selected salon ritual bundles.</p>
+                </div>
+              </article>
+
+              <article class="launch-slide launch-slide-new" data-launch-slide>
+                <div class="launch-slide-copy">
+                  <span class="launch-tag">New product launch</span>
+                  <h3>Velvet Rose Hair Perfume just entered the L.L signature lineup.</h3>
+                  <p>
+                    A fresh premium launch designed for top-of-funnel discovery, gifting, and
+                    social-first product drops.
+                  </p>
+                  <div class="launch-slide-actions">
+                    <a class="button button-primary" href="fragrance.html">Explore Launch</a>
+                    <a class="button button-secondary" href="shop.html">Add to Cart</a>
+                  </div>
+                </div>
+                <div class="launch-slide-highlight">
+                  <span>Launch price</span>
+                  <strong>₹1,299</strong>
+                  <p>Introductory pricing live now with complimentary gift wrap this month.</p>
+                </div>
+              </article>
+
+              <article class="launch-slide launch-slide-bundle" data-launch-slide>
+                <div class="launch-slide-copy">
+                  <span class="launch-tag">Bundle spotlight</span>
+                  <h3>Buy 2 fragrance bestsellers and unlock a free travel grooming pouch.</h3>
+                  <p>
+                    Push average order value with a compact promo window that keeps offers visible
+                    without crowding the main hero.
+                  </p>
+                  <div class="launch-slide-actions">
+                    <a class="button button-primary" href="shop.html">Build Bundle</a>
+                    <a class="button button-ghost" href="accessories.html">View Gift Add-ons</a>
+                  </div>
+                </div>
+                <div class="launch-slide-highlight">
+                  <span>Bundle value</span>
+                  <strong>Save ₹799</strong>
+                  <p>Best paired with attars, perfumes, and travel-size luxury accessories.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="launch-slider-dots" aria-label="Offer slides">
+            <button class="launch-slider-dot is-active" type="button" data-launch-dot="0" aria-label="Go to slide 1"></button>
+            <button class="launch-slider-dot" type="button" data-launch-dot="1" aria-label="Go to slide 2"></button>
+            <button class="launch-slider-dot" type="button" data-launch-dot="2" aria-label="Go to slide 3"></button>
+          </div>
+        </section>
+
         <section class="search-strip" aria-label="Search products">
           <label class="search-input">
             <span>⌕</span>
@@ -59,9 +159,9 @@
             </p>
 
             <div class="hero-actions">
-              <a class="button button-primary" href="#shop">Shop Now</a>
-              <a class="button button-secondary" href="#fragrance">Explore Fragrance</a>
-              <a class="button button-ghost" href="#franchise">Own a Franchise</a>
+              <a class="button button-primary" href="shop.html">Shop Now</a>
+              <a class="button button-secondary" href="fragrance.html">Explore Fragrance</a>
+              <a class="button button-ghost" href="franchise.html">Own a Franchise</a>
             </div>
 
             <div class="hero-metrics">
@@ -111,6 +211,116 @@
           <p>Franchise CRM auto-response funnel</p>
         </section>
 
+        <section class="section-block wallet-section" id="wallet">
+          <div class="section-heading">
+            <p class="eyebrow">Wallet commerce</p>
+            <h2>Add money once, earn loyalty tokens after every order, and redeem them on the next one.</h2>
+            <p>
+              This demo wallet now combines stored balance with a reusable token wallet, so repeat
+              shoppers can unlock savings automatically as they keep buying.
+            </p>
+          </div>
+
+          <div class="wallet-layout">
+            <article class="wallet-card wallet-balance-card">
+              <p class="plan-name">Demo wallet</p>
+              <h3 id="wallet-balance">₹0</h3>
+              <p id="wallet-balance-note">Loading wallet balance...</p>
+              <div class="reward-token-chip">
+                <strong id="reward-token-balance">0 tokens</strong>
+                <span id="reward-token-note">Earn 5% back in tokens after every paid order.</span>
+              </div>
+              <p class="wallet-helper">
+                Top up through UPI, pay from the wallet, and then reuse earned tokens like instant
+                loyalty credit on future purchases.
+              </p>
+            </article>
+
+            <form class="wallet-card wallet-form" id="wallet-topup-form">
+              <div class="form-heading">
+                <h3>Add money</h3>
+                <p>Choose an amount, open the UPI interface, and complete payment to credit your wallet.</p>
+                <p id="wallet-topup-status" aria-live="polite"></p>
+              </div>
+
+              <div class="wallet-topup-grid">
+                <label>
+                  <span>Top-up amount</span>
+                  <input
+                    type="number"
+                    name="amount"
+                    min="100"
+                    step="100"
+                    value="1000"
+                    placeholder="1000"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>UPI app</span>
+                  <select name="source">
+                    <option>Google Pay</option>
+                    <option>PhonePe</option>
+                    <option>Paytm UPI</option>
+                    <option>BHIM UPI</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="wallet-quick-actions">
+                <button type="button" class="button button-secondary" data-topup-amount="500">+₹500</button>
+                <button type="button" class="button button-secondary" data-topup-amount="1000">+₹1,000</button>
+                <button type="button" class="button button-secondary" data-topup-amount="2000">+₹2,000</button>
+              </div>
+
+              <button type="submit" class="button button-primary button-full">Open UPI Payment</button>
+            </form>
+
+            <article class="wallet-card wallet-cart-card" id="cart-panel">
+              <div class="wallet-cart-header">
+                <div>
+                  <p class="plan-name">Cart summary</p>
+                  <h3>Your beauty bag</h3>
+                </div>
+                <strong id="cart-payable">₹0</strong>
+              </div>
+
+              <div class="cart-items" id="cart-items">
+                <p class="cart-empty">Your cart is empty. Add products to pay from wallet.</p>
+              </div>
+
+              <div class="token-wallet-box">
+                <div class="cart-summary-row">
+                  <span>Subtotal</span>
+                  <strong id="cart-subtotal">₹0</strong>
+                </div>
+                <label class="token-redeem-field" for="token-redeem-input">
+                  <span>Redeem tokens</span>
+                  <input type="number" id="token-redeem-input" min="0" step="1" value="0" />
+                </label>
+                <p class="token-redeem-note" id="token-redeem-note">
+                  Use tokens as instant wallet credit on this purchase.
+                </p>
+                <div class="cart-summary-row">
+                  <span>Token discount</span>
+                  <strong id="token-discount">-₹0</strong>
+                </div>
+                <div class="cart-summary-row">
+                  <span>Estimated tokens earned</span>
+                  <strong id="token-earned-preview">0 tokens</strong>
+                </div>
+              </div>
+
+              <div class="wallet-cart-footer">
+                <p id="checkout-status" aria-live="polite">Wallet and token checkout are ready.</p>
+                <button type="button" class="button button-primary button-full" id="wallet-checkout-button">
+                  Pay from Wallet
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
         <section class="section-block" id="shop">
           <div class="section-heading">
             <p class="eyebrow">Curated storefront</p>
@@ -122,14 +332,14 @@
           </div>
 
           <div class="category-pills">
-            <span id="fragrance">Fragrance</span>
-            <span id="skincare">Skin Rituals</span>
+            <a href="fragrance.html">Fragrance</a>
+            <a href="skincare.html">Skin Rituals</a>
             <span>Hair Therapy</span>
-            <span id="accessories">Accessories</span>
+            <a href="accessories.html">Accessories</a>
           </div>
 
           <div class="product-grid">
-            <article class="product-card">
+            <article class="product-card" data-product-id="velvet-amber-attar">
               <div class="product-visual rose-blend">
                 <span>Bestseller</span>
               </div>
@@ -141,11 +351,18 @@
                   <strong>₹1,499</strong>
                   <span>4.8 ★</span>
                 </div>
-                <button class="button button-primary">Add to Cart</button>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="velvet-amber-attar"
+                >
+                  Add to Cart
+                </button>
               </div>
             </article>
 
-            <article class="product-card">
+            <article class="product-card" data-product-id="gold-peptide-radiance-kit">
               <div class="product-visual gold-blend">
                 <span>Salon Glow</span>
               </div>
@@ -157,11 +374,18 @@
                   <strong>₹2,250</strong>
                   <span>4.9 ★</span>
                 </div>
-                <button class="button button-primary">Add to Cart</button>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="gold-peptide-radiance-kit"
+                >
+                  Add to Cart
+                </button>
               </div>
             </article>
 
-            <article class="product-card">
+            <article class="product-card" data-product-id="botanical-repair-ritual">
               <div class="product-visual sand-blend">
                 <span>New Launch</span>
               </div>
@@ -173,11 +397,18 @@
                   <strong>₹1,899</strong>
                   <span>4.7 ★</span>
                 </div>
-                <button class="button button-primary">Add to Cart</button>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="botanical-repair-ritual"
+                >
+                  Add to Cart
+                </button>
               </div>
             </article>
 
-            <article class="product-card">
+            <article class="product-card" data-product-id="ll-grooming-carry-set">
               <div class="product-visual ink-blend">
                 <span>Travel Edit</span>
               </div>
@@ -189,7 +420,14 @@
                   <strong>₹999</strong>
                   <span>4.6 ★</span>
                 </div>
-                <button class="button button-primary">Add to Cart</button>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="ll-grooming-carry-set"
+                >
+                  Add to Cart
+                </button>
               </div>
             </article>
           </div>
@@ -244,7 +482,7 @@
                 <p>Investment: ₹8L-₹15L</p>
                 <p>ROI timeline: 12-18 months</p>
                 <p>Best for malls, transit points, premium high street micro formats.</p>
-                <a class="text-link" href="#franchise-form">Apply Now</a>
+                <a class="text-link" href="franchise.html#franchise-form">Apply Now</a>
               </article>
 
               <article class="franchise-card featured-card">
@@ -253,7 +491,7 @@
                 <p>Investment: ₹18L-₹35L</p>
                 <p>ROI timeline: 18-24 months</p>
                 <p>Balanced service and retail model with stronger average order value.</p>
-                <a class="text-link" href="#franchise-form">Apply Now</a>
+                <a class="text-link" href="franchise.html#franchise-form">Apply Now</a>
               </article>
 
               <article class="franchise-card">
@@ -262,7 +500,7 @@
                 <p>Investment: ₹40L-₹75L</p>
                 <p>ROI timeline: 24-36 months</p>
                 <p>Flagship premium experience with the deepest loyalty and membership upside.</p>
-                <a class="text-link" href="#franchise-form">Apply Now</a>
+                <a class="text-link" href="franchise.html#franchise-form">Apply Now</a>
               </article>
             </div>
 
@@ -270,28 +508,29 @@
               <div class="form-heading">
                 <h3>Apply for franchise access</h3>
                 <p>Smart-filter form with OTP checkpoints and CRM-ready lead capture flow.</p>
+                <p id="franchise-form-status" aria-live="polite"></p>
               </div>
 
               <div class="form-grid">
                 <label>
                   <span>Name</span>
-                  <input type="text" placeholder="Your full name" />
+                  <input type="text" name="name" placeholder="Your full name" required />
                 </label>
                 <label>
                   <span>Mobile</span>
-                  <input type="tel" placeholder="+91 98XXXXXXX" />
+                  <input type="tel" name="mobile" placeholder="+91 98XXXXXXX" required />
                 </label>
                 <label>
                   <span>Email</span>
-                  <input type="email" placeholder="name@example.com" />
+                  <input type="email" name="email" placeholder="name@example.com" required />
                 </label>
                 <label>
                   <span>City</span>
-                  <input type="text" placeholder="Mumbai" />
+                  <input type="text" name="city" placeholder="Mumbai" required />
                 </label>
                 <label>
                   <span>Preferred location</span>
-                  <select>
+                  <select name="preferredLocation" required>
                     <option>Mall</option>
                     <option>High street</option>
                     <option>Near IT park</option>
@@ -300,11 +539,11 @@
                 </label>
                 <label>
                   <span>Area available</span>
-                  <input type="text" placeholder="350 sq.ft" />
+                  <input type="text" name="areaAvailable" placeholder="350 sq.ft" required />
                 </label>
                 <label>
                   <span>Investment budget</span>
-                  <select>
+                  <select name="investmentBudget" required>
                     <option>₹8L-₹15L</option>
                     <option>₹18L-₹35L</option>
                     <option>₹40L-₹75L</option>
@@ -312,11 +551,19 @@
                 </label>
                 <label>
                   <span>OTP verification</span>
-                  <input type="text" placeholder="Enter OTP" />
+                  <input
+                    type="text"
+                    name="otpCode"
+                    placeholder="Enter OTP"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    required
+                  />
                 </label>
               </div>
 
-              <button type="button" class="button button-primary button-full">Submit & Verify</button>
+              <button type="submit" class="button button-primary button-full">Submit & Verify</button>
 
               <div class="automation-notes">
                 <article>
@@ -345,7 +592,7 @@
           <div class="systems-grid">
             <article class="system-card">
               <h3>User journey</h3>
-              <p>User → OTP Login → Browse → Cart → Checkout → Payment → Order confirmation</p>
+              <p>User → OTP Login → Add money to wallet → Browse → Cart → Wallet checkout → Order confirmation</p>
             </article>
             <article class="system-card">
               <h3>Lead journey</h3>
@@ -357,6 +604,115 @@
             </article>
           </div>
         </section>
+
+        <div class="upi-modal" id="upi-modal" hidden>
+          <div class="upi-modal-backdrop" data-upi-close></div>
+          <section
+            class="upi-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="upi-modal-title"
+          >
+            <button class="upi-close" type="button" aria-label="Close UPI payment" data-upi-close>
+              ×
+            </button>
+
+            <div class="upi-sheet-header">
+              <p class="eyebrow">Wallet top-up</p>
+              <h3 id="upi-modal-title">Pay with UPI</h3>
+              <p>Choose your app, verify the UPI ID, and confirm payment to add money to the wallet.</p>
+            </div>
+
+            <article class="upi-payment-card">
+              <div>
+                <p class="upi-chip">UPI collect request</p>
+                <h4 id="upi-modal-amount">₹0</h4>
+                <p class="upi-payee">L.L Beauty Wallet</p>
+                <p class="upi-handle" id="upi-modal-handle">llbeauty.wallet@oksbi</p>
+              </div>
+              <div class="upi-payment-meta">
+                <article>
+                  <span>Selected app</span>
+                  <strong id="upi-modal-app-label">Google Pay</strong>
+                </article>
+                <article>
+                  <span>Linked bank</span>
+                  <strong id="upi-modal-bank-label">HDFC Bank •• 2814</strong>
+                </article>
+                <article>
+                  <span>Wallet credit</span>
+                  <strong>Instant after payment</strong>
+                </article>
+              </div>
+            </article>
+
+            <div class="upi-app-grid" aria-label="Choose UPI app">
+              <button class="upi-app-button is-active" type="button" data-upi-app="Google Pay">
+                <span>G</span>
+                Google Pay
+              </button>
+              <button class="upi-app-button" type="button" data-upi-app="PhonePe">
+                <span>P</span>
+                PhonePe
+              </button>
+              <button class="upi-app-button" type="button" data-upi-app="Paytm UPI">
+                <span>T</span>
+                Paytm UPI
+              </button>
+              <button class="upi-app-button" type="button" data-upi-app="BHIM UPI">
+                <span>B</span>
+                BHIM UPI
+              </button>
+            </div>
+
+            <div class="upi-detail-grid">
+              <label>
+                <span>Your UPI ID</span>
+                <input
+                  id="upi-modal-vpa"
+                  type="text"
+                  inputmode="email"
+                  autocomplete="off"
+                  placeholder="yourname@okbank"
+                />
+              </label>
+              <label>
+                <span>Reference note</span>
+                <input id="upi-modal-note" type="text" value="Wallet top-up for L.L Beauty" readonly />
+              </label>
+            </div>
+
+            <div class="upi-qr-card" aria-hidden="true">
+              <div class="upi-qr-pattern">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div>
+                <p class="upi-chip">Scan & pay</p>
+                <strong id="upi-modal-qr-amount">₹0</strong>
+                <p>Scan from any UPI app or tap the button below after payment is completed.</p>
+              </div>
+            </div>
+
+            <p class="upi-modal-status" id="upi-modal-status" aria-live="polite">
+              Open a UPI app and confirm the payment to continue.
+            </p>
+
+            <div class="upi-sheet-actions">
+              <button class="button button-secondary" type="button" data-upi-close>Cancel</button>
+              <button class="button button-primary" type="button" id="upi-confirm-button">
+                I Paid via UPI
+              </button>
+            </div>
+          </section>
+        </div>
       </main>
 
       <footer class="site-footer" id="about">
@@ -365,8 +721,8 @@
           <p>A premium digital commerce, salon, and franchise brand platform for modern Indian beauty retail.</p>
         </div>
         <div>
-          <a href="#about">About L.L.</a>
-          <a href="#contact">Contact</a>
+          <a href="about.html">About L.L.</a>
+          <a href="contact.html">Contact</a>
           <a href="#privacy">Privacy Policy</a>
           <a href="#terms">Terms</a>
         </div>
@@ -377,5 +733,6 @@
         </div>
       </footer>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>

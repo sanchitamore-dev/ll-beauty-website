@@ -1,0 +1,95 @@
+{
+  "balance": 356,
+  "currency": "INR",
+  "rewardTokens": 0,
+  "rewardRules": {
+    "earnRate": 0.05,
+    "tokenValue": 1
+  },
+  "transactions": [
+    {
+      "id": "txn_1776186731596_purchase",
+      "type": "purchase",
+      "amount": 5999,
+      "orderId": "order_1776186731596",
+      "createdAt": "2026-04-14T17:12:11.596Z"
+    },
+    {
+      "id": "txn_1776186724663",
+      "type": "top_up",
+      "amount": 5000,
+      "source": "Google Pay (yourname@okhdfcbank)",
+      "createdAt": "2026-04-14T17:12:04.663Z"
+    },
+    {
+      "id": "txn_1776185831976",
+      "type": "top_up",
+      "amount": 500,
+      "source": "Google Pay (yourname@okhdfcbank)",
+      "createdAt": "2026-04-14T16:57:11.976Z"
+    },
+    {
+      "id": "txn_1776185138490_purchase",
+      "type": "purchase",
+      "amount": 2250,
+      "orderId": "order_1776185138490",
+      "createdAt": "2026-04-14T16:45:38.490Z"
+    },
+    {
+      "id": "txn_1776185127827",
+      "type": "top_up",
+      "amount": 500,
+      "source": "Google Pay (yourname@okhdfcbank)",
+      "createdAt": "2026-04-14T16:45:27.827Z"
+    },
+    {
+      "id": "txn_1776177936730",
+      "type": "top_up",
+      "amount": 500,
+      "source": "Primary bank account",
+      "createdAt": "2026-04-14T14:45:36.730Z"
+    },
+    {
+      "id": "txn_1776177913455",
+      "type": "top_up",
+      "amount": 100,
+      "source": "Primary bank account",
+      "createdAt": "2026-04-14T14:45:13.455Z"
+    },
+    {
+      "id": "txn_1776177837566",
+      "type": "top_up",
+      "amount": 1000,
+      "source": "UPI linked account",
+      "createdAt": "2026-04-14T14:43:57.566Z"
+    },
+    {
+      "id": "txn_1776177401903_purchase",
+      "type": "purchase",
+      "amount": 999,
+      "orderId": "order_1776177401903",
+      "createdAt": "2026-04-14T14:36:41.903Z"
+    },
+    {
+      "id": "txn_1776177364276",
+      "type": "top_up",
+      "amount": 1100,
+      "source": "Primary bank account",
+      "createdAt": "2026-04-14T14:36:04.276Z"
+    },
+    {
+      "id": "txn_1776176913482_purchase",
+      "type": "purchase",
+      "amount": 1499,
+      "orderId": "order_1776176913482",
+      "createdAt": "2026-04-14T14:28:33.482Z"
+    },
+    {
+      "id": "txn_1776176881919",
+      "type": "top_up",
+      "amount": 1400,
+      "source": "Primary bank account",
+      "createdAt": "2026-04-14T14:28:01.919Z"
+    }
+  ]
+}

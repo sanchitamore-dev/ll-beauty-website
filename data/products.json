@@ -1,0 +1,38 @@
+[
+  {
+    "id": "velvet-amber-attar",
+    "name": "Velvet Amber Attar",
+    "category": "Fragrance",
+    "price": 1499,
+    "currency": "INR",
+    "rating": 4.8,
+    "description": "Warm oud layers, saffron bloom, and a polished long-stay trail."
+  },
+  {
+    "id": "gold-peptide-radiance-kit",
+    "name": "Gold Peptide Radiance Kit",
+    "category": "Skincare",
+    "price": 2250,
+    "currency": "INR",
+    "rating": 4.9,
+    "description": "Clean beauty essentials for hydration, polish, and event-ready skin."
+  },
+  {
+    "id": "botanical-repair-ritual",
+    "name": "Botanical Repair Ritual",
+    "category": "Haircare",
+    "price": 1899,
+    "currency": "INR",
+    "rating": 4.7,
+    "description": "Shine-focused hair therapy with salon-inspired nourishment and hold."
+  },
+  {
+    "id": "ll-grooming-carry-set",
+    "name": "L.L Grooming Carry Set",
+    "category": "Accessories",
+    "price": 999,
+    "currency": "INR",
+    "rating": 4.6,
+    "description": "Premium grooming tools packed for commutes, gifting, and repeat purchase."
+  }
+]

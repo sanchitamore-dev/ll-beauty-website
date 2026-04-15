@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop | L.L Luxury Organic Beauty</title>
+    <meta
+      name="description"
+      content="Shop the curated L.L Beauty storefront across fragrance, skincare, hair therapy, and premium accessories."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="brand-lockup">
+          <button class="icon-button" aria-label="Open menu">☰</button>
+          <a class="brand" href="index.html" aria-label="L.L Beauty home">
+            <span class="brand-mark">LL</span>
+            <span class="brand-copy">
+              <strong>L.L Beauty</strong>
+              <span>Luxury Organic Beauty</span>
+            </span>
+          </a>
+        </div>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="shop.html" aria-current="page">Shop</a>
+          <a href="fragrance.html">Fragrance</a>
+          <a href="skincare.html">Skincare</a>
+          <a href="accessories.html">Accessories</a>
+          <a href="salon.html">Salon / Lounge</a>
+          <a href="franchise.html">Franchise</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+          <a class="text-link" href="contact.html">Login</a>
+          <button class="icon-button cart-button" id="cart-button" aria-label="View cart">
+            🛍
+            <span class="cart-count" id="cart-count">0</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="search-strip" aria-label="Search products">
+          <label class="search-input">
+            <span>⌕</span>
+            <input type="text" placeholder="Search by ritual, fragrance, or gift set" />
+          </label>
+        </section>
+
+        <section class="hero-section">
+          <div class="hero-copy">
+            <p class="eyebrow">Curated storefront</p>
+            <h1>Every category gets its own stage, but the shopping experience stays seamless.</h1>
+            <p class="hero-text">
+              Discover signature attars, salon-grade skincare, high-performance hair rituals, and
+              premium grooming accessories built for repeat purchase.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="fragrance.html">Explore Fragrance</a>
+              <a class="button button-secondary" href="skincare.html">Discover Skincare</a>
+              <a class="button button-ghost" href="accessories.html">Browse Accessories</a>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-panel hero-panel-primary">
+              <span class="panel-badge">Luxury edit</span>
+              <h2>Merchandised for discovery, gifting, and quick conversion.</h2>
+              <p>Each card is tuned for premium storytelling, social proof, and fast add-to-cart action.</p>
+              <span class="panel-chip">Built for India-first beauty retail</span>
+            </div>
+
+            <div class="hero-grid">
+              <div class="hero-panel hero-panel-mini tone-rose">
+                <span>Fragrance</span>
+                <strong>Attars and perfumes</strong>
+              </div>
+              <div class="hero-panel hero-panel-mini tone-sand">
+                <span>Skincare</span>
+                <strong>Glow and repair</strong>
+              </div>
+              <div class="hero-panel hero-panel-mini tone-gold">
+                <span>Accessories</span>
+                <strong>Tools and travel sets</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block">
+          <div class="section-heading">
+            <p class="eyebrow">Shop by category</p>
+            <h2>Move across product worlds without losing the premium feel.</h2>
+          </div>
+
+          <div class="category-pills">
+            <a href="fragrance.html">Fragrance</a>
+            <a href="skincare.html">Skincare</a>
+            <span>Hair Therapy</span>
+            <a href="accessories.html">Accessories</a>
+          </div>
+
+          <div class="product-grid">
+            <article class="product-card" data-product-id="velvet-amber-attar">
+              <div class="product-visual rose-blend">
+                <span>Bestseller</span>
+              </div>
+              <div class="product-copy">
+                <p class="product-type">Fragrance</p>
+                <h3>Velvet Amber Attar</h3>
+                <p>Warm oud layers, saffron bloom, and a polished long-stay trail.</p>
+                <div class="product-meta">
+                  <strong>₹1,499</strong>
+                  <span>4.8 ★</span>
+                </div>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="velvet-amber-attar"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+
+            <article class="product-card" data-product-id="gold-peptide-radiance-kit">
+              <div class="product-visual gold-blend">
+                <span>Salon Glow</span>
+              </div>
+              <div class="product-copy">
+                <p class="product-type">Skincare</p>
+                <h3>Gold Peptide Radiance Kit</h3>
+                <p>Clean beauty essentials for hydration, polish, and event-ready skin.</p>
+                <div class="product-meta">
+                  <strong>₹2,250</strong>
+                  <span>4.9 ★</span>
+                </div>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="gold-peptide-radiance-kit"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+
+            <article class="product-card" data-product-id="botanical-repair-ritual">
+              <div class="product-visual sand-blend">
+                <span>Hair Therapy</span>
+              </div>
+              <div class="product-copy">
+                <p class="product-type">Haircare</p>
+                <h3>Botanical Repair Ritual</h3>
+                <p>Shine-focused hair therapy with salon-inspired nourishment and hold.</p>
+                <div class="product-meta">
+                  <strong>₹1,899</strong>
+                  <span>4.7 ★</span>
+                </div>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="botanical-repair-ritual"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+
+            <article class="product-card" data-product-id="ll-grooming-carry-set">
+              <div class="product-visual ink-blend">
+                <span>Travel Edit</span>
+              </div>
+              <div class="product-copy">
+                <p class="product-type">Accessories</p>
+                <h3>L.L Grooming Carry Set</h3>
+                <p>Premium grooming tools packed for commutes, gifting, and repeat purchase.</p>
+                <div class="product-meta">
+                  <strong>₹999</strong>
+                  <span>4.6 ★</span>
+                </div>
+                <button
+                  class="button button-primary"
+                  type="button"
+                  data-add-to-cart
+                  data-product-id="ll-grooming-carry-set"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-block systems-section">
+          <div class="section-heading">
+            <p class="eyebrow">Shopping paths</p>
+            <h2>Enter by category, exit with a fuller cart.</h2>
+          </div>
+
+          <div class="systems-grid">
+            <article class="system-card">
+              <h3>Fragrance gifting</h3>
+              <p>Layer discovery cards, premium copy, and occasion-driven bundles for a faster fragrance purchase.</p>
+            </article>
+            <article class="system-card">
+              <h3>Skincare routines</h3>
+              <p>Position curated ritual kits and regimen logic to increase trust and average order value.</p>
+            </article>
+            <article class="system-card">
+              <h3>Accessory add-ons</h3>
+              <p>Use accessory pages for gifting, travel edits, and impulse upgrades around hero categories.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div>
+          <h3>L.L Beauty</h3>
+          <p>A premium digital commerce, salon, and franchise brand platform for modern Indian beauty retail.</p>
+        </div>
+        <div>
+          <a href="about.html">About L.L.</a>
+          <a href="contact.html">Contact</a>
+          <a href="franchise.html">Franchise</a>
+          <a href="shop.html">Shop</a>
+        </div>
+        <div>
+          <a href="mailto:hello@llbeauty.in">hello@llbeauty.in</a>
+          <a href="tel:+919999999999">+91 99999 99999</a>
+          <a href="contact.html">Instagram / YouTube / WhatsApp</a>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
