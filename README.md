@@ -1,28 +1,57 @@
 # L.L Beauty Website
 
-This repository contains a static homepage prototype for **L.L Beauty**, positioned as a premium organic beauty brand that combines:
+This repository contains a multi-page **L.L Beauty** website, positioned as a premium organic beauty brand that combines:
 
 - luxury product commerce
 - salon and lounge brand storytelling
 - franchise lead generation
 
-The current build is made with just:
+The public site is GitHub Pages-ready and built with:
 
 - [index.html](/home/primateonlinux/ll-beauty-website/index.html)
 - [style.css](/home/primateonlinux/ll-beauty-website/style.css)
+- [script.js](/home/primateonlinux/ll-beauty-website/script.js)
 
-The repository now includes a lightweight Express backend starter for local development:
+For GitHub Pages deployment:
+
+- all pages are served as static files
+- product data is loaded from `data/products.json`
+- wallet, cart, orders, and franchise demo submissions are stored in the browser with `localStorage`
+- no backend is required for the GitHub Pages version
+
+The repository also includes a lightweight Express backend starter for local development:
 
 - static file serving for the homepage
 - `GET /api/health` for a quick backend health check
 - `GET /api/products` to expose the featured products as JSON
 - `POST /api/franchise-leads` to capture franchise inquiries into a local JSON file
 
-The current implementation still does not include a real database, login system, cart logic, or payment integration. It is a clean starter backend that turns the static concept into a working form flow.
+The current implementation still does not include a real database, login system, or payment gateway. On GitHub Pages, the interactive shopping and franchise flows work as a browser demo. When running the Express server locally, you can keep using the Node-based starter backend for development.
+
+## GitHub Pages Setup
+
+1. Push this repository to GitHub.
+2. Open the repository on GitHub.
+3. Go to `Settings` > `Pages`.
+4. Under `Build and deployment`, choose `Deploy from a branch`.
+5. Select the `main` branch and the `/ (root)` folder.
+6. Save the setting and wait for GitHub Pages to publish the site.
+
+Your site URL will look like:
+
+```text
+https://<your-github-username>.github.io/ll-beauty-website/
+```
+
+Notes:
+
+- The storefront pages will load directly from GitHub Pages.
+- Wallet top-ups, checkout, and franchise submissions are demo-only on Pages and stay in each visitor's browser.
+- If you want real lead capture or real payments, you will still need a backend host such as Render, Vercel functions, Netlify functions, or a custom server.
 
 ## Backend Setup
 
-The backend uses Node.js and Express.
+The backend uses Node.js and Express for local development.
 
 1. Install dependencies:
 
@@ -46,7 +75,7 @@ Notes:
 
 - Franchise leads are stored in [data/franchise-leads.json](/home/primateonlinux/ll-beauty-website/data/franchise-leads.json).
 - Featured product data is stored in [data/products.json](/home/primateonlinux/ll-beauty-website/data/products.json).
-- The OTP check is currently a demo placeholder. Use `123456` when submitting the form locally.
+- The OTP check is currently a demo placeholder. Use `123456` when submitting the form locally or on GitHub Pages.
 
 ## Website Purpose
 

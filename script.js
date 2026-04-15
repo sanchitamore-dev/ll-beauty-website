@@ -1,15 +1,30 @@
 const CART_STORAGE_KEY = "ll_beauty_cart";
+const WALLET_STORAGE_KEY = "ll_beauty_wallet";
+const ORDERS_STORAGE_KEY = "ll_beauty_orders";
+const LEADS_STORAGE_KEY = "ll_beauty_franchise_leads";
+const PRODUCTS_DATA_PATH = "data/products.json";
+const WALLET_DATA_PATH = "data/wallet.json";
+const ORDERS_DATA_PATH = "data/orders.json";
+const LEADS_DATA_PATH = "data/franchise-leads.json";
+const DEMO_OTP = "123456";
+const DEFAULT_WALLET = {
+  balance: 0,
+  currency: "INR",
+  rewardTokens: 0,
+  rewardRules: {
+    earnRate: 0.05,
+    tokenValue: 1,
+  },
+  transactions: [],
+};
 
 const state = {
   products: new Map(),
   cart: loadCart(),
   wallet: {
-    balance: 0,
-    currency: "INR",
-    rewardTokens: 0,
+    ...DEFAULT_WALLET,
     rewardRules: {
-      earnRate: 0.05,
-      tokenValue: 1,
+      ...DEFAULT_WALLET.rewardRules,
     },
     transactions: [],
   },
@@ -106,6 +121,130 @@ function loadCart() {
 
 function saveCart() {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(state.cart));
+}
+
+function cloneData(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function readStorageJson(key, fallbackValue) {
+  try {
+    const storedValue = localStorage.getItem(key);
+
+    if (!storedValue) {
+      return cloneData(fallbackValue);
+    }
+
+    return JSON.parse(storedValue);
+  } catch {
+    return cloneData(fallbackValue);
+  }
+}
+
+function writeStorageJson(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+async function loadSeedJson(path, fallbackValue) {
+  try {
+    const response = await fetch(path);
+
+    if (!response.ok) {
+      throw new Error(`Unable to load ${path}`);
+    }
+
+    return await response.json();
+  } catch {
+    return cloneData(fallbackValue);
+  }
+}
+
+function normalizeWallet(wallet) {
+  return {
+    ...DEFAULT_WALLET,
+    ...(wallet || {}),
+    rewardRules: {
+      ...DEFAULT_WALLET.rewardRules,
+      ...(wallet?.rewardRules || {}),
+    },
+    transactions: Array.isArray(wallet?.transactions) ? wallet.transactions : [],
+  };
+}
+
+async function loadPersistedCollection(storageKey, dataPath) {
+  const seedValue = await loadSeedJson(dataPath, []);
+  const collection = readStorageJson(storageKey, seedValue);
+  const normalizedCollection = Array.isArray(collection) ? collection : cloneData(seedValue);
+
+  if (!localStorage.getItem(storageKey)) {
+    writeStorageJson(storageKey, normalizedCollection);
+  }
+
+  return normalizedCollection;
+}
+
+async function loadPersistedWallet() {
+  const seededWallet = normalizeWallet(await loadSeedJson(WALLET_DATA_PATH, DEFAULT_WALLET));
+  const wallet = normalizeWallet(readStorageJson(WALLET_STORAGE_KEY, seededWallet));
+
+  if (!localStorage.getItem(WALLET_STORAGE_KEY)) {
+    writeStorageJson(WALLET_STORAGE_KEY, wallet);
+  }
+
+  return wallet;
+}
+
+function parseCurrencyAmount(value) {
+  const amount = Number(value);
+
+  if (!Number.isFinite(amount)) {
+    return null;
+  }
+
+  return Math.round(amount);
+}
+
+function normalizePhoneNumber(phoneNumber) {
+  return String(phoneNumber || "").replace(/[^\d+]/g, "").trim();
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || "").trim());
+}
+
+function validateLead(payload) {
+  const requiredFields = [
+    "name",
+    "mobile",
+    "email",
+    "city",
+    "preferredLocation",
+    "areaAvailable",
+    "investmentBudget",
+    "otpCode",
+  ];
+
+  for (const field of requiredFields) {
+    if (!String(payload[field] || "").trim()) {
+      return `Missing required field: ${field}`;
+    }
+  }
+
+  if (!isValidEmail(payload.email)) {
+    return "Please enter a valid email address.";
+  }
+
+  const normalizedMobile = normalizePhoneNumber(payload.mobile);
+
+  if (normalizedMobile.length < 10) {
+    return "Please enter a valid mobile number.";
+  }
+
+  if (String(payload.otpCode).trim() !== DEMO_OTP) {
+    return "Invalid OTP code. Use 123456 for this demo.";
+  }
+
+  return null;
 }
 
 function getRewardRules() {
@@ -562,13 +701,34 @@ function closeUpiModal() {
 }
 
 async function processWalletTopup(payload) {
-  return fetchJson("/api/wallet/top-up", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
+  const amount = parseCurrencyAmount(payload.amount);
+  const source = String(payload.source || "bank account").trim();
+
+  if (!amount || amount < 100) {
+    throw new Error("Top-up amount must be at least ₹100.");
+  }
+
+  const updatedWallet = normalizeWallet({
+    ...state.wallet,
+    balance: state.wallet.balance + amount,
+    transactions: [
+      {
+        id: `txn_${Date.now()}`,
+        type: "top_up",
+        amount,
+        source,
+        createdAt: new Date().toISOString(),
+      },
+      ...(state.wallet.transactions || []),
+    ].slice(0, 12),
   });
+
+  writeStorageJson(WALLET_STORAGE_KEY, updatedWallet);
+
+  return {
+    message: `Demo wallet credited with ₹${amount} from ${source}.`,
+    wallet: updatedWallet,
+  };
 }
 
 function updateCart(productId) {
@@ -590,32 +750,161 @@ function removeCartItem(productId) {
   renderCart();
 }
 
-async function fetchJson(url, options) {
-  const response = await fetch(url, options);
-  const result = await response.json();
+async function processWalletCheckout(payload) {
+  const cartItems = Array.isArray(payload.items) ? payload.items : [];
+  const requestedTokens = parseCurrencyAmount(payload.tokensToRedeem ?? 0);
+  const safeRequestedTokens = requestedTokens === null ? null : Math.max(0, requestedTokens);
 
-  if (!response.ok) {
-    throw new Error(result.message || "Request failed.");
+  if (!cartItems.length) {
+    throw new Error("Your cart is empty.");
   }
 
-  return result;
+  if (safeRequestedTokens === null) {
+    throw new Error("Tokens to redeem must be a valid number.");
+  }
+
+  const normalizedItems = [];
+  let total = 0;
+
+  for (const item of cartItems) {
+    const product = state.products.get(String(item.id || "").trim());
+    const quantity = parseCurrencyAmount(item.quantity);
+
+    if (!product || !quantity || quantity < 1) {
+      throw new Error("Cart contains an invalid product or quantity.");
+    }
+
+    const lineTotal = product.price * quantity;
+    total += lineTotal;
+    normalizedItems.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
+      lineTotal,
+    });
+  }
+
+  const tokenValue = Math.max(1, parseCurrencyAmount(state.wallet.rewardRules?.tokenValue) || 1);
+  const maxRedeemableTokens = Math.min(state.wallet.rewardTokens || 0, Math.floor(total / tokenValue));
+  const tokensRedeemed = Math.min(safeRequestedTokens, maxRedeemableTokens);
+  const tokenDiscount = tokensRedeemed * tokenValue;
+  const payableTotal = total - tokenDiscount;
+  const earnedTokens = Math.floor(payableTotal * (state.wallet.rewardRules?.earnRate || 0));
+
+  if (state.wallet.balance < payableTotal) {
+    throw new Error(`Insufficient wallet balance. Add ₹${payableTotal - state.wallet.balance} more to continue.`);
+  }
+
+  const timestamp = Date.now();
+  const createdAt = new Date().toISOString();
+  const order = {
+    id: `order_${timestamp}`,
+    items: normalizedItems,
+    subtotal: total,
+    tokensRedeemed,
+    tokenDiscount,
+    total: payableTotal,
+    earnedTokens,
+    currency: state.wallet.currency || "INR",
+    paymentMethod: "wallet",
+    createdAt,
+  };
+
+  const walletTransactions = [];
+
+  if (tokensRedeemed > 0) {
+    walletTransactions.push({
+      id: `txn_${timestamp}_redeem`,
+      type: "reward_redeemed",
+      amount: tokensRedeemed,
+      value: tokenDiscount,
+      orderId: order.id,
+      createdAt,
+    });
+  }
+
+  walletTransactions.push({
+    id: `txn_${timestamp}_purchase`,
+    type: "purchase",
+    amount: payableTotal,
+    orderId: order.id,
+    createdAt,
+  });
+
+  if (earnedTokens > 0) {
+    walletTransactions.push({
+      id: `txn_${timestamp}_reward`,
+      type: "reward_earned",
+      amount: earnedTokens,
+      orderId: order.id,
+      createdAt,
+    });
+  }
+
+  const updatedWallet = normalizeWallet({
+    ...state.wallet,
+    balance: state.wallet.balance - payableTotal,
+    rewardTokens: (state.wallet.rewardTokens || 0) - tokensRedeemed + earnedTokens,
+    transactions: [...walletTransactions.reverse(), ...(state.wallet.transactions || [])].slice(0, 20),
+  });
+  const orders = await loadPersistedCollection(ORDERS_STORAGE_KEY, ORDERS_DATA_PATH);
+
+  orders.unshift(order);
+  writeStorageJson(ORDERS_STORAGE_KEY, orders);
+  writeStorageJson(WALLET_STORAGE_KEY, updatedWallet);
+
+  return {
+    message:
+      earnedTokens > 0
+        ? `Demo payment successful. Order ${order.id} confirmed and ${earnedTokens} tokens earned.`
+        : `Demo payment successful. Order ${order.id} confirmed.`,
+    order,
+    wallet: updatedWallet,
+  };
+}
+
+async function submitFranchiseLead(payload) {
+  const validationError = validateLead(payload);
+
+  if (validationError) {
+    throw new Error(validationError);
+  }
+
+  const leads = await loadPersistedCollection(LEADS_STORAGE_KEY, LEADS_DATA_PATH);
+  const lead = {
+    id: `lead_${Date.now()}`,
+    name: String(payload.name).trim(),
+    mobile: normalizePhoneNumber(payload.mobile),
+    email: String(payload.email).trim().toLowerCase(),
+    city: String(payload.city).trim(),
+    preferredLocation: String(payload.preferredLocation).trim(),
+    areaAvailable: String(payload.areaAvailable).trim(),
+    investmentBudget: String(payload.investmentBudget).trim(),
+    otpVerified: true,
+    source: "github-pages-demo",
+    createdAt: new Date().toISOString(),
+  };
+
+  leads.unshift(lead);
+  writeStorageJson(LEADS_STORAGE_KEY, leads);
+
+  return {
+    message: "Thanks. Your franchise request has been saved in this browser demo.",
+    lead,
+  };
 }
 
 async function hydrateStorefront() {
   const [products, wallet] = await Promise.all([
-    fetchJson("/api/products"),
-    fetchJson("/api/wallet"),
+    loadSeedJson(PRODUCTS_DATA_PATH, []),
+    loadPersistedWallet(),
+    loadPersistedCollection(ORDERS_STORAGE_KEY, ORDERS_DATA_PATH),
+    loadPersistedCollection(LEADS_STORAGE_KEY, LEADS_DATA_PATH),
   ]);
 
   state.products = new Map(products.map((product) => [product.id, product]));
-  state.wallet = {
-    ...state.wallet,
-    ...wallet,
-    rewardRules: {
-      ...state.wallet.rewardRules,
-      ...(wallet.rewardRules || {}),
-    },
-  };
+  state.wallet = normalizeWallet(wallet);
   renderWallet();
   renderCart();
 }
@@ -768,15 +1057,9 @@ if (checkoutButton) {
     setCheckoutStatus("Processing wallet payment...");
 
     try {
-      const result = await fetchJson("/api/wallet/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items,
-          tokensToRedeem: pricing.tokensApplied,
-        }),
+      const result = await processWalletCheckout({
+        items,
+        tokensToRedeem: pricing.tokensApplied,
       });
 
       state.wallet = result.wallet;
@@ -825,13 +1108,7 @@ if (franchiseForm && franchiseFormStatus) {
     }
 
     try {
-      const result = await fetchJson("/api/franchise-leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const result = await submitFranchiseLead(payload);
 
       franchiseForm.reset();
       franchiseFormStatus.textContent =
@@ -851,7 +1128,7 @@ hydrateStorefront().catch((error) => {
   updateCartCount();
   renderCart();
   renderWallet();
-  setTopupStatus("Start the Express server to enable wallet top-ups.", true);
+  setTopupStatus("Wallet demo could not be initialized in this browser.", true);
   setCheckoutStatus(error.message || "Storefront data could not be loaded.", true);
 });
 
