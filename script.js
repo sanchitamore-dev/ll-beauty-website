@@ -55,7 +55,6 @@ const cartButton = document.querySelector("#cart-button");
 const cartPanel = document.querySelector("#cart-panel");
 const checkoutButton = document.querySelector("#wallet-checkout-button");
 const checkoutStatus = document.querySelector("#checkout-status");
-const addToCartButtons = document.querySelectorAll("[data-add-to-cart]");
 const quickTopupButtons = document.querySelectorAll("[data-topup-amount]");
 const upiModal = document.querySelector("#upi-modal");
 const upiModalAmount = document.querySelector("#upi-modal-amount");
@@ -204,6 +203,15 @@ function parseCurrencyAmount(value) {
   return Math.round(amount);
 }
 
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function normalizePhoneNumber(phoneNumber) {
   return String(phoneNumber || "").replace(/[^\d+]/g, "").trim();
 }
@@ -260,6 +268,120 @@ function formatCurrency(amount) {
     currency: state.wallet.currency || "INR",
     maximumFractionDigits: 0,
   }).format(amount || 0);
+}
+
+function getProductMetaLabel(product) {
+  if (product.metaLabel) {
+    return product.metaLabel;
+  }
+
+  if (typeof product.rating === "number") {
+    return `${product.rating.toFixed(1)} ★`;
+  }
+
+  return product.category;
+}
+
+function renderProductCard(product) {
+  const visualClasses = ["product-visual", product.theme || "sand-blend"];
+
+  if (product.image) {
+    visualClasses.push("product-visual-photo");
+  }
+
+  const note = product.note ? escapeHtml(product.note) : "";
+  const sourceUrl = product.sourceUrl ? escapeHtml(product.sourceUrl) : "";
+  const sourceLabel = escapeHtml(product.sourceLabel || "View source");
+  const noteMarkup =
+    note || sourceUrl
+      ? `<p class="product-note">${note}${sourceUrl ? ` <a href="${sourceUrl}" target="_blank" rel="noreferrer">${sourceLabel}</a>` : ""}</p>`
+      : "";
+
+  return `
+    <article class="product-card" data-product-id="${escapeHtml(product.id)}">
+      <div class="${visualClasses.join(" ")}">
+        <span>${escapeHtml(product.badge || product.category)}</span>
+        ${
+          product.image
+            ? `<img class="product-photo" src="${escapeHtml(product.image)}" alt="${escapeHtml(
+                product.imageAlt || product.name
+              )}" loading="lazy" />`
+            : ""
+        }
+      </div>
+      <div class="product-copy">
+        <p class="product-type">${escapeHtml(product.category)}</p>
+        <h3>${escapeHtml(product.name)}</h3>
+        <p>${escapeHtml(product.description)}</p>
+        <div class="product-meta">
+          <strong>${formatCurrency(product.price)}</strong>
+          <span>${escapeHtml(getProductMetaLabel(product))}</span>
+        </div>
+        ${noteMarkup}
+        <button
+          class="button button-primary"
+          type="button"
+          data-add-to-cart
+          data-product-id="${escapeHtml(product.id)}"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </article>
+  `;
+}
+
+function renderProductCatalogs() {
+  const productGrids = document.querySelectorAll("[data-product-grid]");
+
+  if (!productGrids.length) {
+    return;
+  }
+
+  const products = Array.from(state.products.values()).sort((left, right) => {
+    const orderDelta =
+      (left.sortOrder ?? Number.MAX_SAFE_INTEGER) - (right.sortOrder ?? Number.MAX_SAFE_INTEGER);
+
+    if (orderDelta !== 0) {
+      return orderDelta;
+    }
+
+    return String(left.name || "").localeCompare(String(right.name || ""));
+  });
+
+  productGrids.forEach((grid) => {
+    const category = grid.dataset.productCategory;
+    const scope = grid.dataset.productScope || "all";
+    const limit = Number.parseInt(grid.dataset.productLimit || "", 10);
+    let catalog = products;
+
+    if (category) {
+      catalog = catalog.filter((product) => product.category === category);
+    }
+
+    if (scope === "featured") {
+      catalog = catalog.filter((product) => product.featured);
+    }
+
+    if (Number.isFinite(limit) && limit > 0) {
+      catalog = catalog.slice(0, limit);
+    }
+
+    grid.innerHTML = catalog.length
+      ? catalog.map((product) => renderProductCard(product)).join("")
+      : `
+          <article class="product-card">
+            <div class="product-visual sand-blend">
+              <span>Coming Soon</span>
+            </div>
+            <div class="product-copy">
+              <p class="product-type">Catalog update</p>
+              <h3>Fresh products are being added right now.</h3>
+              <p>We are syncing this category with the latest live listings and will show them here shortly.</p>
+            </div>
+          </article>
+        `;
+  });
 }
 
 function formatTokens(amount) {
@@ -905,6 +1027,7 @@ async function hydrateStorefront() {
 
   state.products = new Map(products.map((product) => [product.id, product]));
   state.wallet = normalizeWallet(wallet);
+  renderProductCatalogs();
   renderWallet();
   renderCart();
 }
@@ -1006,19 +1129,23 @@ if (upiConfirmButton) {
   });
 }
 
-addToCartButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const productId = button.dataset.productId;
-    const product = state.products.get(productId);
+document.addEventListener("click", (event) => {
+  const addToCartButton = event.target.closest("[data-add-to-cart]");
 
-    if (!product) {
-      setCheckoutStatus("Products are still loading. Please try again in a moment.", true);
-      return;
-    }
+  if (!addToCartButton) {
+    return;
+  }
 
-    updateCart(productId);
-    setCheckoutStatus(`${product.name} added to cart.`);
-  });
+  const productId = addToCartButton.dataset.productId;
+  const product = state.products.get(productId);
+
+  if (!product) {
+    setCheckoutStatus("Products are still loading. Please try again in a moment.", true);
+    return;
+  }
+
+  updateCart(productId);
+  setCheckoutStatus(`${product.name} added to cart.`);
 });
 
 if (cartItems) {

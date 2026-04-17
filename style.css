@@ -685,7 +685,7 @@ body.modal-open {
 }
 
 .product-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .product-card {
@@ -717,6 +717,43 @@ body.modal-open {
   z-index: 1;
   color: #fff9f1;
   background: rgba(44, 23, 17, 0.72);
+}
+
+.product-visual-photo {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.68), transparent 24%),
+    linear-gradient(180deg, #fff8fb 0%, #fce4ec 100%);
+}
+
+.product-visual-photo::after {
+  inset: auto -10% -36%;
+  height: 62%;
+  transform: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.product-visual-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 244, 248, 0.5));
+}
+
+.product-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.sunscreen-glow {
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.72), transparent 22%),
+    linear-gradient(135deg, #ffe6ce, #ffd2b0 54%, #fff3e2);
 }
 
 .rose-blend {
@@ -766,6 +803,17 @@ body.modal-open {
   justify-content: space-between;
   align-items: center;
   margin: 18px 0 16px;
+  font-weight: 700;
+}
+
+.product-note {
+  margin: -4px 0 16px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.product-note a {
+  color: var(--gold-deep);
   font-weight: 700;
 }
 
