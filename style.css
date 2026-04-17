@@ -21,9 +21,14 @@
   --sand: #f1d8df;
   --cream: #fff5f8;
   --shadow: 0 24px 60px rgba(121, 71, 95, 0.14);
+  --bg-image-hero: url("assets/images/rose-garden-flower.jpg");
+  --bg-image-floral-left: url("assets/images/moss-rose-illustration.jpg");
+  --bg-image-floral-right: url("assets/images/britannica-rose.jpg");
 }
 
 body {
+  position: relative;
+  overflow-x: hidden;
   font-family: "Manrope", "Segoe UI", sans-serif;
   color: var(--text);
   line-height: 1.6;
@@ -32,6 +37,40 @@ body {
     radial-gradient(circle at top right, rgba(241, 212, 223, 0.42), transparent 28%),
     linear-gradient(180deg, #fff8fb 0%, #fdf1f6 48%, #f8edf2 100%);
   min-height: 100vh;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  mix-blend-mode: multiply;
+}
+
+body::before {
+  top: 90px;
+  right: -36px;
+  width: min(30vw, 360px);
+  height: min(36vw, 420px);
+  opacity: 0.1;
+  transform: rotate(8deg);
+  filter: sepia(0.28) saturate(0.72);
+  background-image: var(--bg-image-floral-right);
+}
+
+body::after {
+  left: -42px;
+  bottom: 32px;
+  width: min(34vw, 410px);
+  height: min(42vw, 480px);
+  opacity: 0.14;
+  transform: rotate(-7deg);
+  filter: sepia(0.22) saturate(0.84);
+  background-image: var(--bg-image-floral-left);
 }
 
 html {
@@ -54,6 +93,8 @@ body.modal-open {
 }
 
 .page-shell {
+  position: relative;
+  z-index: 1;
   width: min(1200px, calc(100% - 32px));
   margin: 24px auto;
 }
@@ -535,9 +576,13 @@ body.modal-open {
   min-height: 290px;
   padding-top: 72px;
   background:
+    linear-gradient(120deg, rgba(255, 249, 252, 0.9), rgba(255, 248, 251, 0.72) 48%, rgba(239, 210, 222, 0.86)),
     radial-gradient(circle at top right, rgba(224, 139, 170, 0.24), transparent 26%),
     radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.6), transparent 36%),
+    var(--bg-image-hero),
     linear-gradient(135deg, #f9dde7 0%, #fff8fb 54%, #efd2de 100%);
+  background-position: center, top right, bottom left, center, center;
+  background-size: auto, auto, auto, cover, auto;
 }
 
 .hero-panel-primary h2 {
@@ -1447,6 +1492,22 @@ body.modal-open {
 }
 
 @media (max-width: 859px) {
+  body::before {
+    top: 120px;
+    right: -48px;
+    width: min(42vw, 250px);
+    height: min(50vw, 300px);
+    opacity: 0.08;
+  }
+
+  body::after {
+    left: -56px;
+    bottom: 24px;
+    width: min(46vw, 280px);
+    height: min(56vw, 340px);
+    opacity: 0.1;
+  }
+
   .page-shell {
     width: min(100% - 20px, 1000px);
     margin: 10px auto;
@@ -1514,6 +1575,11 @@ body.modal-open {
 }
 
 @media (max-width: 640px) {
+  body::before,
+  body::after {
+    opacity: 0.06;
+  }
+
   .brand-copy span:last-child,
   .promo-ribbon {
     font-size: 0.72rem;
@@ -1537,6 +1603,7 @@ body.modal-open {
   .hero-panel-primary {
     min-height: 240px;
     padding-top: 66px;
+    background-position: center, top right, bottom left, 60% center, center;
   }
 
   .product-visual {
