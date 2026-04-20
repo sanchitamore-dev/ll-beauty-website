@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, "data");
 const PRODUCTS_FILE = path.join(DATA_DIR, "products.json");
 const LEADS_FILE = path.join(DATA_DIR, "franchise-leads.json");
+const EVA_AGENT_FILE = path.join(DATA_DIR, "eva-agent-applications.json");
 const WALLET_FILE = path.join(DATA_DIR, "wallet.json");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
 const DEMO_OTP = "123456";
@@ -82,6 +83,7 @@ function validateLead(payload) {
     "mobile",
     "email",
     "city",
+    "franchiseFormat",
     "preferredLocation",
     "areaAvailable",
     "investmentBudget",
@@ -106,6 +108,49 @@ function validateLead(payload) {
 
   if (String(payload.otpCode).trim() !== DEMO_OTP) {
     return "Invalid OTP code. Use 123456 for this starter backend.";
+  }
+
+  return null;
+}
+
+function validateEvaAgentApplication(payload) {
+  const requiredFields = [
+    "agentType",
+    "name",
+    "phone",
+    "email",
+    "aadhaarNumber",
+    "panNumber",
+    "address",
+    "shopAddress",
+  ];
+
+  for (const field of requiredFields) {
+    if (!String(payload[field] || "").trim()) {
+      return `Missing required field: ${field}`;
+    }
+  }
+
+  if (!["Pre", "Paid"].includes(String(payload.agentType).trim())) {
+    return "Please choose Pre or Paid agent type.";
+  }
+
+  if (!isValidEmail(payload.email)) {
+    return "Please enter a valid email address.";
+  }
+
+  const normalizedPhone = normalizePhoneNumber(payload.phone);
+
+  if (normalizedPhone.length < 10) {
+    return "Please enter a valid phone number.";
+  }
+
+  if (!/^\d{12}$/.test(String(payload.aadhaarNumber).trim())) {
+    return "Please enter a valid 12 digit Aadhaar card number.";
+  }
+
+  if (!/^[A-Z]{5}\d{4}[A-Z]$/.test(String(payload.panNumber).trim().toUpperCase())) {
+    return "Please enter a valid PAN card number.";
   }
 
   return null;
@@ -324,6 +369,7 @@ app.post("/api/franchise-leads", async (request, response, next) => {
       mobile: normalizedMobile,
       email: String(request.body.email).trim().toLowerCase(),
       city: String(request.body.city).trim(),
+      franchiseFormat: String(request.body.franchiseFormat).trim(),
       preferredLocation: String(request.body.preferredLocation).trim(),
       areaAvailable: String(request.body.areaAvailable).trim(),
       investmentBudget: String(request.body.investmentBudget).trim(),
@@ -344,6 +390,42 @@ app.post("/api/franchise-leads", async (request, response, next) => {
   }
 });
 
+app.post("/api/eva-agent-applications", async (request, response, next) => {
+  try {
+    const validationError = validateEvaAgentApplication(request.body);
+
+    if (validationError) {
+      return response.status(400).json({ message: validationError });
+    }
+
+    const applications = await readJson(EVA_AGENT_FILE, []);
+
+    const application = {
+      id: `eva_agent_${Date.now()}`,
+      agentType: String(request.body.agentType).trim(),
+      name: String(request.body.name).trim(),
+      phone: normalizePhoneNumber(request.body.phone),
+      email: String(request.body.email).trim().toLowerCase(),
+      aadhaarNumber: String(request.body.aadhaarNumber).trim(),
+      panNumber: String(request.body.panNumber).trim().toUpperCase(),
+      address: String(request.body.address).trim(),
+      shopAddress: String(request.body.shopAddress).trim(),
+      source: "website",
+      createdAt: new Date().toISOString(),
+    };
+
+    applications.unshift(application);
+    await writeJson(EVA_AGENT_FILE, applications);
+
+    return response.status(201).json({
+      message: "Eva AI Agent application submitted successfully.",
+      application,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.use((error, _request, response, _next) => {
   console.error(error);
   response.status(500).json({
@@ -354,6 +436,7 @@ app.use((error, _request, response, _next) => {
 async function startServer() {
   await ensureDataFile(PRODUCTS_FILE, []);
   await ensureDataFile(LEADS_FILE, []);
+  await ensureDataFile(EVA_AGENT_FILE, []);
   await ensureDataFile(WALLET_FILE, DEFAULT_WALLET);
   await ensureDataFile(ORDERS_FILE, []);
 

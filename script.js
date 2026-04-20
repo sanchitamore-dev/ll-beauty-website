@@ -2,10 +2,12 @@ const CART_STORAGE_KEY = "ll_beauty_cart";
 const WALLET_STORAGE_KEY = "ll_beauty_wallet";
 const ORDERS_STORAGE_KEY = "ll_beauty_orders";
 const LEADS_STORAGE_KEY = "ll_beauty_franchise_leads";
+const EVA_AGENT_STORAGE_KEY = "ll_beauty_eva_agent_applications";
 const PRODUCTS_DATA_PATH = "data/products.json";
 const WALLET_DATA_PATH = "data/wallet.json";
 const ORDERS_DATA_PATH = "data/orders.json";
 const LEADS_DATA_PATH = "data/franchise-leads.json";
+const EVA_AGENT_DATA_PATH = "data/eva-agent-applications.json";
 const DEMO_OTP = "123456";
 const DEFAULT_WALLET = {
   balance: 0,
@@ -32,6 +34,8 @@ const state = {
 
 const franchiseForm = document.querySelector("#franchise-form");
 const franchiseFormStatus = document.querySelector("#franchise-form-status");
+const evaAgentForm = document.querySelector("#eva-agent-form");
+const evaAgentFormStatus = document.querySelector("#eva-agent-form-status");
 const launchSliderTrack = document.querySelector("#launch-slider-track");
 const launchSlides = document.querySelectorAll("[data-launch-slide]");
 const launchSliderPrev = document.querySelector("#launch-slider-prev");
@@ -226,6 +230,7 @@ function validateLead(payload) {
     "mobile",
     "email",
     "city",
+    "franchiseFormat",
     "preferredLocation",
     "areaAvailable",
     "investmentBudget",
@@ -250,6 +255,49 @@ function validateLead(payload) {
 
   if (String(payload.otpCode).trim() !== DEMO_OTP) {
     return "Invalid OTP code. Use 123456 for this demo.";
+  }
+
+  return null;
+}
+
+function validateEvaAgentApplication(payload) {
+  const requiredFields = [
+    "agentType",
+    "name",
+    "phone",
+    "email",
+    "aadhaarNumber",
+    "panNumber",
+    "address",
+    "shopAddress",
+  ];
+
+  for (const field of requiredFields) {
+    if (!String(payload[field] || "").trim()) {
+      return `Missing required field: ${field}`;
+    }
+  }
+
+  if (!["Pre", "Paid"].includes(String(payload.agentType).trim())) {
+    return "Please choose Pre or Paid agent type.";
+  }
+
+  if (!isValidEmail(payload.email)) {
+    return "Please enter a valid email address.";
+  }
+
+  const normalizedPhone = normalizePhoneNumber(payload.phone);
+
+  if (normalizedPhone.length < 10) {
+    return "Please enter a valid phone number.";
+  }
+
+  if (!/^\d{12}$/.test(String(payload.aadhaarNumber).trim())) {
+    return "Please enter a valid 12 digit Aadhaar card number.";
+  }
+
+  if (!/^[A-Z]{5}\d{4}[A-Z]$/.test(String(payload.panNumber).trim().toUpperCase())) {
+    return "Please enter a valid PAN card number.";
   }
 
   return null;
@@ -1000,6 +1048,7 @@ async function submitFranchiseLead(payload) {
     mobile: normalizePhoneNumber(payload.mobile),
     email: String(payload.email).trim().toLowerCase(),
     city: String(payload.city).trim(),
+    franchiseFormat: String(payload.franchiseFormat).trim(),
     preferredLocation: String(payload.preferredLocation).trim(),
     areaAvailable: String(payload.areaAvailable).trim(),
     investmentBudget: String(payload.investmentBudget).trim(),
@@ -1017,12 +1066,44 @@ async function submitFranchiseLead(payload) {
   };
 }
 
+async function submitEvaAgentApplication(payload) {
+  const validationError = validateEvaAgentApplication(payload);
+
+  if (validationError) {
+    throw new Error(validationError);
+  }
+
+  const applications = await loadPersistedCollection(EVA_AGENT_STORAGE_KEY, EVA_AGENT_DATA_PATH);
+  const application = {
+    id: `eva_agent_${Date.now()}`,
+    agentType: String(payload.agentType).trim(),
+    name: String(payload.name).trim(),
+    phone: normalizePhoneNumber(payload.phone),
+    email: String(payload.email).trim().toLowerCase(),
+    aadhaarNumber: String(payload.aadhaarNumber).trim(),
+    panNumber: String(payload.panNumber).trim().toUpperCase(),
+    address: String(payload.address).trim(),
+    shopAddress: String(payload.shopAddress).trim(),
+    source: "github-pages-demo",
+    createdAt: new Date().toISOString(),
+  };
+
+  applications.unshift(application);
+  writeStorageJson(EVA_AGENT_STORAGE_KEY, applications);
+
+  return {
+    message: "Thanks. Your Eva AI Agent application has been saved in this browser demo.",
+    application,
+  };
+}
+
 async function hydrateStorefront() {
   const [products, wallet] = await Promise.all([
     loadSeedJson(PRODUCTS_DATA_PATH, []),
     loadPersistedWallet(),
     loadPersistedCollection(ORDERS_STORAGE_KEY, ORDERS_DATA_PATH),
     loadPersistedCollection(LEADS_STORAGE_KEY, LEADS_DATA_PATH),
+    loadPersistedCollection(EVA_AGENT_STORAGE_KEY, EVA_AGENT_DATA_PATH),
   ]);
 
   state.products = new Map(products.map((product) => [product.id, product]));
@@ -1243,6 +1324,43 @@ if (franchiseForm && franchiseFormStatus) {
     } catch (error) {
       franchiseFormStatus.textContent =
         error.message || "Something went wrong while submitting the form.";
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+      }
+    }
+  });
+}
+
+if (evaAgentForm && evaAgentFormStatus) {
+  evaAgentForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const submitButton = evaAgentForm.querySelector('button[type="submit"]');
+    const formData = new FormData(evaAgentForm);
+    const payload = Object.fromEntries(formData.entries());
+
+    evaAgentFormStatus.textContent = "Submitting your Eva AI Agent application...";
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    try {
+      const result = await submitEvaAgentApplication(payload);
+
+      evaAgentForm.reset();
+      const preOption = evaAgentForm.querySelector('input[name="agentType"][value="Pre"]');
+
+      if (preOption) {
+        preOption.checked = true;
+      }
+
+      evaAgentFormStatus.textContent =
+        result.message || "Thanks. Your Eva AI Agent application has been captured.";
+    } catch (error) {
+      evaAgentFormStatus.textContent =
+        error.message || "Something went wrong while submitting the application.";
     } finally {
       if (submitButton) {
         submitButton.disabled = false;
