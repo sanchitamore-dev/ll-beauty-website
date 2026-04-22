@@ -186,8 +186,10 @@ body.modal-open {
 .site-nav {
   display: none;
   align-items: center;
-  gap: 18px;
-  font-size: 0.95rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  font-size: 0.88rem;
   color: var(--muted);
 }
 
@@ -903,6 +905,18 @@ body.modal-open {
   align-items: start;
 }
 
+.agent-layout {
+  display: grid;
+  grid-template-columns: 0.72fr 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.agent-options {
+  display: grid;
+  gap: 20px;
+}
+
 .wallet-section {
   background:
     radial-gradient(circle at top left, rgba(216, 136, 165, 0.16), transparent 24%),
@@ -1354,7 +1368,7 @@ body.modal-open {
 }
 
 .franchise-cards {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .franchise-card,
@@ -1391,6 +1405,10 @@ body.modal-open {
   gap: 14px;
 }
 
+.form-field-wide {
+  grid-column: 1 / -1;
+}
+
 .lead-form label {
   display: grid;
   gap: 8px;
@@ -1410,6 +1428,53 @@ body.modal-open {
   border: 1px solid rgba(96, 69, 51, 0.14);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.88);
+  color: var(--text);
+}
+
+.choice-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 18px;
+  border: none;
+}
+
+.choice-group legend {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.choice-group label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 76px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.choice-group input[type="radio"] {
+  width: 18px;
+  min-height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  accent-color: var(--gold-deep);
+}
+
+.choice-group span {
+  display: grid;
+  gap: 2px;
+  color: var(--muted);
+}
+
+.choice-group strong {
   color: var(--text);
 }
 
@@ -1486,6 +1551,7 @@ body.modal-open {
   }
 
   .franchise-layout,
+  .agent-layout,
   .site-footer {
     grid-template-columns: 1fr;
   }
@@ -1515,7 +1581,37 @@ body.modal-open {
 
   .site-header {
     top: 10px;
+    flex-wrap: wrap;
     padding: 14px 16px;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+    padding-top: 14px;
+    margin-top: 4px;
+    border-top: 1px solid var(--line);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .site-header.is-menu-open .site-nav {
+    display: flex;
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.42);
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .site-nav a:hover,
+  .site-nav a:focus-visible {
+    background: rgba(255, 255, 255, 0.76);
   }
 
   .header-actions .text-link {
@@ -1557,6 +1653,7 @@ body.modal-open {
   .product-grid,
   .experience-grid,
   .franchise-cards,
+  .choice-group,
   .systems-grid,
   .form-grid,
   .wallet-topup-grid,

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eva AI Agent | L.L Luxury Organic Beauty</title>
+    <meta
+      name="description"
+      content="Apply to become an Eva AI Agent for L.L Beauty store operations or franchise selling."
+    />
+    <link rel="stylesheet" href="style.css?v=20260422-1" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="brand-lockup">
+          <button class="icon-button" aria-label="Open menu">☰</button>
+          <a class="brand" href="index.html" aria-label="L.L Beauty home">
+            <span class="brand-mark">LL</span>
+            <span class="brand-copy">
+              <strong>L.L Beauty</strong>
+              <span>Luxury Organic Beauty</span>
+            </span>
+          </a>
+        </div>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="shop.html">Shop</a>
+          <a href="fragrance.html">Fragrance</a>
+          <a href="skincare.html">Skincare</a>
+          <a href="haircare.html">Haircare</a>
+          <a href="accessories.html">Accessories</a>
+          <a href="salon.html">Salon / Lounge</a>
+          <a href="franchise.html">Franchise</a>
+          <a href="eva-agent.html" aria-current="page">Eva AI Agent</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="header-actions">
+          <a class="text-link" href="#eva-agent-form">Apply</a>
+          <button class="icon-button cart-button" id="cart-button" aria-label="View cart">
+            🛍
+            <span class="cart-count" id="cart-count">0</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero-section">
+          <div class="hero-copy">
+            <p class="eyebrow">Eva AI Agent</p>
+            <h1>Apply to operate L.L Beauty stores or sell franchise opportunities.</h1>
+            <p class="hero-text">
+              Eva AI Agent applications collect identity, shop, and contact details so the team can
+              qualify each applicant for the right role.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="#eva-agent-form">Open Application</a>
+              <a class="button button-secondary" href="franchise.html">View Franchise</a>
+            </div>
+
+            <div class="hero-metrics">
+              <article>
+                <strong>Pre</strong>
+                <span>Operate only store</span>
+              </article>
+              <article>
+                <strong>Paid</strong>
+                <span>Sell franchise only</span>
+              </article>
+              <article>
+                <strong>KYC</strong>
+                <span>Aadhaar and PAN details captured</span>
+              </article>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="hero-panel hero-panel-primary">
+              <span class="panel-badge">Agent onboarding</span>
+              <h2>Store operations and franchise selling in one clean application path.</h2>
+              <p>Designed for quick applicant review with identity, address, and role preference in one form.</p>
+              <span class="panel-chip">Eva application flow</span>
+            </div>
+
+            <div class="hero-grid">
+              <div class="hero-panel hero-panel-mini tone-sand">
+                <span>Pre</span>
+                <strong>Store operator</strong>
+              </div>
+              <div class="hero-panel hero-panel-mini tone-gold">
+                <span>Paid</span>
+                <strong>Franchise seller</strong>
+              </div>
+              <div class="hero-panel hero-panel-mini tone-rose">
+                <span>Review</span>
+                <strong>KYC ready</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-block franchise-section">
+          <div class="section-heading">
+            <p class="eyebrow">Agent application</p>
+            <h2>Submit your Eva AI Agent details for review.</h2>
+            <p>
+              Choose the agent type that matches your work: Pre is for operating only the store,
+              while Paid is for selling only the franchise.
+            </p>
+          </div>
+
+          <div class="agent-layout">
+            <div class="agent-options">
+              <article class="franchise-card featured-card">
+                <p class="plan-name">Pre</p>
+                <h3>Operate only store</h3>
+                <p>For applicants who want to handle store activity, daily operations, and customer coordination.</p>
+                <a class="text-link" href="#eva-agent-form">Apply as Pre</a>
+              </article>
+
+              <article class="franchise-card">
+                <p class="plan-name">Paid</p>
+                <h3>Sell franchise only</h3>
+                <p>For applicants focused on franchise selling, lead conversion, and opportunity handoff.</p>
+                <a class="text-link" href="#eva-agent-form">Apply as Paid</a>
+              </article>
+            </div>
+
+            <form class="lead-form" id="eva-agent-form">
+              <div class="form-heading">
+                <h3>Eva AI Agent application form</h3>
+                <p>Identity, contact, and shop details for agent review.</p>
+                <p id="eva-agent-form-status" aria-live="polite"></p>
+              </div>
+
+              <fieldset class="choice-group">
+                <legend>Agent type</legend>
+                <label>
+                  <input type="radio" name="agentType" value="Pre" required checked />
+                  <span>
+                    <strong>Pre</strong>
+                    Operate only store
+                  </span>
+                </label>
+                <label>
+                  <input type="radio" name="agentType" value="Paid" required />
+                  <span>
+                    <strong>Paid</strong>
+                    Sell franchise only
+                  </span>
+                </label>
+              </fieldset>
+
+              <div class="form-grid">
+                <label>
+                  <span>Name</span>
+                  <input type="text" name="name" placeholder="Your full name" required />
+                </label>
+                <label>
+                  <span>Phone number</span>
+                  <input type="tel" name="phone" placeholder="+91 98XXXXXXX" required />
+                </label>
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" placeholder="name@example.com" required />
+                </label>
+                <label>
+                  <span>Aadhaar card number</span>
+                  <input
+                    type="text"
+                    name="aadhaarNumber"
+                    placeholder="12 digit Aadhaar"
+                    inputmode="numeric"
+                    pattern="[0-9]{12}"
+                    maxlength="12"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>PAN card number</span>
+                  <input
+                    type="text"
+                    name="panNumber"
+                    placeholder="ABCDE1234F"
+                    pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]{1}"
+                    maxlength="10"
+                    required
+                  />
+                </label>
+                <label>
+                  <span>Address</span>
+                  <input type="text" name="address" placeholder="House / street / city" required />
+                </label>
+                <label class="form-field-wide">
+                  <span>Shop address</span>
+                  <input type="text" name="shopAddress" placeholder="Shop name, market, city" required />
+                </label>
+              </div>
+
+              <button type="submit" class="button button-primary button-full">Submit Agent Application</button>
+
+              <div class="automation-notes">
+                <article>
+                  <strong>Pre</strong>
+                  <p>Application tagged for store operations review.</p>
+                </article>
+                <article>
+                  <strong>Paid</strong>
+                  <p>Application tagged for franchise selling review.</p>
+                </article>
+                <article>
+                  <strong>Verification</strong>
+                  <p>Aadhaar, PAN, phone, email, and shop address are saved for follow-up.</p>
+                </article>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div>
+          <h3>L.L Beauty</h3>
+          <p>A premium digital commerce, salon, and franchise brand platform for modern Indian beauty retail.</p>
+        </div>
+        <div>
+          <a href="about.html">About L.L.</a>
+          <a href="contact.html">Contact</a>
+          <a href="franchise.html">Franchise</a>
+          <a href="eva-agent.html">Eva AI Agent</a>
+          <a href="shop.html">Shop</a>
+        </div>
+        <div>
+          <a href="mailto:hello@llbeauty.in">hello@llbeauty.in</a>
+          <a href="tel:+919999999999">+91 99999 99999</a>
+          <a href="contact.html">Instagram / YouTube / WhatsApp</a>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js?v=20260422-1"></script>
+  </body>
+</html>
