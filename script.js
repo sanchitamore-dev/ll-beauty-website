@@ -36,6 +36,9 @@ const franchiseForm = document.querySelector("#franchise-form");
 const franchiseFormStatus = document.querySelector("#franchise-form-status");
 const evaAgentForm = document.querySelector("#eva-agent-form");
 const evaAgentFormStatus = document.querySelector("#eva-agent-form-status");
+const siteHeader = document.querySelector(".site-header");
+const mobileMenuButton = siteHeader?.querySelector(".brand-lockup .icon-button");
+const siteNav = siteHeader?.querySelector(".site-nav");
 const launchSliderTrack = document.querySelector("#launch-slider-track");
 const launchSlides = document.querySelectorAll("[data-launch-slide]");
 const launchSliderPrev = document.querySelector("#launch-slider-prev");
@@ -102,6 +105,58 @@ let launchSliderLastTimestamp = 0;
 let launchSliderOffset = 0;
 let launchSliderBaseCount = 0;
 const LAUNCH_SLIDER_SPEED = 0.04;
+
+function setMobileMenuOpen(isOpen) {
+  if (!siteHeader || !mobileMenuButton) {
+    return;
+  }
+
+  siteHeader.classList.toggle("is-menu-open", isOpen);
+  mobileMenuButton.setAttribute("aria-expanded", String(isOpen));
+  mobileMenuButton.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+}
+
+function setupMobileMenu() {
+  if (!siteHeader || !mobileMenuButton || !siteNav) {
+    return;
+  }
+
+  if (!siteNav.id) {
+    siteNav.id = "primary-navigation";
+  }
+
+  mobileMenuButton.setAttribute("type", "button");
+  mobileMenuButton.setAttribute("aria-controls", siteNav.id);
+  mobileMenuButton.setAttribute("aria-expanded", "false");
+
+  mobileMenuButton.addEventListener("click", () => {
+    setMobileMenuOpen(!siteHeader.classList.contains("is-menu-open"));
+  });
+
+  siteNav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+      setMobileMenuOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setMobileMenuOpen(false);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!siteHeader.contains(event.target)) {
+      setMobileMenuOpen(false);
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.matchMedia("(min-width: 860px)").matches) {
+      setMobileMenuOpen(false);
+    }
+  });
+}
 
 function loadCart() {
   try {
@@ -1377,4 +1432,5 @@ hydrateStorefront().catch((error) => {
   setCheckoutStatus(error.message || "Storefront data could not be loaded.", true);
 });
 
+setupMobileMenu();
 setupLaunchSlider();

@@ -1581,7 +1581,37 @@ body.modal-open {
 
   .site-header {
     top: 10px;
+    flex-wrap: wrap;
     padding: 14px 16px;
+  }
+
+  .site-nav {
+    order: 3;
+    width: 100%;
+    padding-top: 14px;
+    margin-top: 4px;
+    border-top: 1px solid var(--line);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .site-header.is-menu-open .site-nav {
+    display: flex;
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.42);
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .site-nav a:hover,
+  .site-nav a:focus-visible {
+    background: rgba(255, 255, 255, 0.76);
   }
 
   .header-actions .text-link {
